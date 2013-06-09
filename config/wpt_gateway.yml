@@ -1,0 +1,47 @@
+---
+
+mbus: nats://nats:asdfasdfasdf@168.1.48.11:4222
+index: 0
+cloud_controller_uri: http://ccng.tcloud.com
+service:
+  name: wtp
+  version: "4.0"
+  description: 'wtp service'
+  plans: ['100']
+  default_plan: '100'
+  tags: ['wtp', 'wtp-4.0']
+  timeout: 15
+  supported_versions: ['4.0']
+  version_aliases:
+    'current': '4.0'
+  
+token: u9sadfy9adfspsafgmjasdfhjopadfs
+logging:
+  file: /var/vcap/sys/log/wtp_gateway/wtp_gateway.log
+  level: debug
+  syslog: vcap.wtp_gateway
+
+pid: /var/vcap/sys/run/wtp_gateway/wtp_gateway.pid
+node_timeout: 8
+z_interval: 30
+check_orphan_interval: 7200
+double_check_orphan_interval: 300
+max_nats_payload: 1048576
+resque:
+  host: 168.1.48.82
+  port: 3456
+  password: fksaefblsdf9
+  expire: 
+download_url_template: "http://service-serialization.tcloud.com/serialized/%{service}/%{name}/snapshots/%{snapshot_id}?token=%{token}"
+
+plan_management:
+  plans:
+    '100':
+      high_water: 900
+      low_water: 100
+      allow_over_provisioning: false
+      lifecycle:
+        serialization: enable
+        snapshot:
+          quota: 1
+        job: enable

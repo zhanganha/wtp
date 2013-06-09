@@ -1,0 +1,36 @@
+#!/usr/bin/env ruby
+# -*- mode: ruby -*-
+# Copyright (c) 2009-2011 Tongtech, Inc.
+
+ENV["BUNDLE_GEMFILE"] ||= File.expand_path("../../Gemfile", __FILE__)
+require 'bundler/setup'
+require 'vcap_services_base'
+
+$LOAD_PATH.unshift(File.expand_path("../../lib", __FILE__))
+require "wtp_service/wtp_node"
+
+class VCAP::Services::Wtp::NodeBin < VCAP::Services::Base::NodeBin
+
+  def node_class
+    VCAP::Services::Wtp::Node
+  end
+
+  def default_config_file
+    config_base_dir = ENV["CLOUD_FOUNDRY_CONFIG_PATH"] || File.join(File.dirname(__FILE__), '..', 'config')
+    File.join(config_base_dir, 'wtp_node.yml')
+  end
+
+  def additional_config(options, config)
+    options[:config_template] = File.expand_path("../../resources/wtpfilesrv.conf", __FILE__)
+    options[:port_range] = parse_property(config, "port_range", Range)
+    options[:tlrt_path] = parse_property(config, "wtp_path", String)
+    options[:tlrt_shutdown_path] = parse_property(config, "wtp_shutdown_path", String)
+    options[:tlrt_log_dir] = parse_property(config, "wtp_log_dir", String)
+    options[:max_clients] = parse_property(config, "max_clients", Integer, :optional => true)
+    options[:quota_files] = parse_property(config, "quota_files", Integer, :optional => true)
+    options
+  end
+
+end
+
+VCAP::Services::Wtp::NodeBin.new.start

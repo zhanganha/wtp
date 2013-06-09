@@ -1,0 +1,29 @@
+---
+
+capacity: 500
+plan: '100'
+local_db: sqlite3:/var/vcap/services/wtp/wtp_node.db
+mbus: nats://nats:asdfasdfasdf@168.1.48.11:4222
+index: 0
+base_dir: /var/vcap/services/wtp/instances
+logging:
+  level: debug
+  syslog: vcap.wtp_node
+tlrt_log_dir: /var/vcap/services/wtp/logs
+pid: /var/vcap/sys/run/wtp_node/wtp_node.pid
+max_memory: 128
+node_id: wtp_node_100_1
+default_version: '4.0'
+supported_versions: ['4.0']
+tlrt_path: /var/vcap/packages/wtp/startup.sh
+tlrt_shutdown_path: /var/vcap/packages/wtp/shutdown.sh
+store_path: /var/vcap/packages/wtp
+port_range:
+  first: 25001
+  last: 45000
+
+z_interval: 30
+max_nats_payload: 1048576
+fqdn_hosts: false
+op_time_limit: 6
+migration_nfs: /mnt/migration
